@@ -1,0 +1,9 @@
+# Capturas originales: tienen nombres y montos reales. Nunca se suben.
+material/
+# Herramientas locales
+.taste-skill/
+.claude/
+bocetos/
+__pycache__/
+# Notas internas de diseño y plan
+docs/
