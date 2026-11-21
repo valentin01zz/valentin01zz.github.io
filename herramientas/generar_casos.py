@@ -132,9 +132,9 @@ PLANTILLA = """<!doctype html>
 <meta property="og:type" content="article">
 <meta property="og:title" content="{titulo} · Valentín Gil">
 <meta property="og:description" content="{bajada}">
-<meta property="og:image" content="https://valentin01zz.github.io/img/compartir.jpg">
-<link rel="canonical" href="https://valentin01zz.github.io/proyectos/{slug}.html">
-<meta property="og:url" content="https://valentin01zz.github.io/proyectos/{slug}.html">
+<meta property="og:image" content="https://portafolio-gilvalentin.com.ar/img/compartir.jpg">
+<link rel="canonical" href="https://portafolio-gilvalentin.com.ar/proyectos/{slug}.html">
+<meta property="og:url" content="https://portafolio-gilvalentin.com.ar/proyectos/{slug}.html">
 <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
