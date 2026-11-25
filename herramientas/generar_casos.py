@@ -28,7 +28,7 @@ CASOS = [
         "num": "01",
         "bajada": "Sistema de caja, inventario y reportes para un drugstore de barrio, con una app de celular para que el dueño siga el negocio desde donde esté.",
         "ficha": [("Cliente", "Drugstore de barrio"), ("Tipo", "Programa de PC + app de celular"),
-                  ("Tecnología", "Python · SQLite"), ("Año", "2026")],
+                  ("Tecnología", "Python · SQLite · Flutter · Firebase"), ("Año", "2026")],
         "portada_img": ("donafull/punto-de-venta.webp", 1600, 782, "Pantalla de punto de venta de DonaFull"),
         "datos": [(2862, "ventas en un mes"), (790, "productos cargados"), (7, "secciones con atajo de teclado")],
         "problema": [
@@ -42,7 +42,7 @@ CASOS = [
             "Cierre de caja por turno: compara lo que debería haber con lo que se contó.",
             "Reportes del mes: ventas por día y los productos más vendidos.",
             "Exporta un Excel con gráficos por día, medio de pago, vendedor y categoría.",
-            "App de celular para el dueño.",
+            "DonaFull Monitor: la app del dueño, con el día dibujado como una línea de subte, el stock y los reportes en tiempo real.",
         ],
         "galeria": [
             ("donafull/reportes.webp", 1600, 782, "Reportes del mes con ventas por día y top 10 de productos", True),
@@ -50,6 +50,11 @@ CASOS = [
             ("donafull/analisis-excel.webp", 1600, 782, "Análisis de ventas que genera un Excel con gráficos", False),
         ],
         "telefonos": [],
+        "monitor": [
+            ("donafull-monitor/hoy.webp", "Pantalla Hoy: el día como una línea de subte, con cada franja horaria como estación"),
+            ("donafull-monitor/stock.webp", "Pantalla Stock con filtros de reponer y sin stock"),
+            ("donafull-monitor/reportes.webp", "Pantalla Reportes con el gráfico de ventas de los últimos 14 días"),
+        ],
         "links": [],
         "siguiente": ("turnofacil", "TurnoFacil"),
     },
@@ -120,15 +125,13 @@ CASOS = [
 ]
 
 PLANTILLA = """<!doctype html>
-<html lang="es-AR" data-type="service">
+<html lang="es-AR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{titulo} · Valentín Gil</title>
 <meta name="description" content="{bajada}">
-<meta name="page-type" content="service">
-<meta name="site-kind" content="other">
-<meta name="theme-color" content="#efede8">
+<meta name="theme-color" content="#faf8f5">
 <meta property="og:type" content="article">
 <meta property="og:title" content="{titulo} · Valentín Gil">
 <meta property="og:description" content="{bajada}">
@@ -138,104 +141,100 @@ PLANTILLA = """<!doctype html>
 <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..100,500..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/sitio.css">
 <script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 
 <header class="nav">
-  <div class="wrap nav-barra">
-    <a class="skip-link label" href="#contenido">Saltar al contenido</a>
-    <a class="logo label" href="../index.html" aria-label="Valentín Gil, inicio"><span class="logo-marca" aria-hidden="true">VG</span><span>Valentín Gil</span></a>
-    <button class="menu-boton label" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu">Menú <span class="puntos" aria-hidden="true"><i></i><i></i><i></i></span></button>
+  <nav class="pill" aria-label="Principal">
+    <a class="logo" href="../index.html" aria-label="Valentín Gil, inicio">valentín<span class="punto">.</span></a>
+    <button class="menu-boton" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu">Menú <svg class="chev" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    <a class="contacto" href="../index.html#contacto">Contacto +</a>
+  </nav>
+  <div class="menu" id="menu" data-abierto="false">
+    <a href="../index.html#trabajos">Trabajos <span>01</span></a>
+    <a href="../index.html#sobre">Sobre mí <span>02</span></a>
+    <a href="../index.html#servicios">Servicios <span>03</span></a>
+    <a href="../index.html#proceso">Proceso <span>04</span></a>
+    <a href="../index.html#contacto">Contacto <span>05</span></a>
+    <a href="{wa}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a>
   </div>
 </header>
-
-<div class="menu" id="menu" data-abierto="false" role="dialog" aria-modal="true" aria-label="Menú">
-  <div class="menu-cabeza">
-    <span class="label">Valentín Gil</span>
-    <button class="menu-cerrar label" type="button" data-cerrar-menu>Cerrar ✕</button>
-  </div>
-  <ul class="menu-links">
-    <li><a class="display" href="../index.html#proyectos"><span class="label">01</span>Proyectos</a></li>
-    <li><a class="display" href="../index.html#trabajo"><span class="label">02</span>Cómo trabajo</a></li>
-    <li><a class="display" href="../index.html#bitacora"><span class="label">03</span>Bitácora</a></li>
-    <li><a class="display" href="../index.html#contacto"><span class="label">04</span>Contacto</a></li>
-  </ul>
-  <div class="menu-pie label">
-    <span>San Juan, Argentina</span>
-    <a href="{wa}" target="_blank" rel="noopener">WhatsApp ↗</a>
-    <a href="mailto:{mail}">{mail}</a>
-    <a href="{github}" target="_blank" rel="noopener">GitHub ↗</a>
-  </div>
-</div>
 
 <main id="contenido">
 
   <section class="caso-portada" data-entrada aria-labelledby="titulo">
     <div class="wrap">
-      <div class="hero-text">
-        <a class="volver label" href="../index.html#proyectos">← Todos los proyectos</a>
-        <p class="label acento aparece">{num} / Caso real</p>
-        <h1 class="display" id="titulo"><span class="linea"><span>{titulo}</span></span></h1>
-        <p class="caso-bajada aparece">{bajada}</p>
-        <div class="botones label aparece" style="margin-top:28px">{cta}</div>
-      </div>
-      <dl class="ficha label aparece">
+      <a class="volver entra" href="../index.html#trabajos">← Todos los trabajos</a>
+      <p class="kicker entra">{num} · Caso real</p>
+      <h1 id="titulo">{titulo}<span class="punto">.</span></h1>
+      <p class="caso-bajada">{bajada}</p>
+      <div class="caso-acciones">{cta}</div>
+      <dl class="ficha">
 {ficha}
       </dl>
     </div>
   </section>
 
-  <section class="seccion caso-pantalla{fondo}" aria-labelledby="t-vista">
+  <section aria-labelledby="t-vista">
     <div class="wrap">
-      <h2 class="display titulo-seccion" id="t-vista">Pantallas de {titulo}</h2>
+      <h2 class="kicker" id="t-vista" style="margin-bottom:24px">Pantallas de {titulo}</h2>
 {portada}
 {datos}
     </div>
   </section>
 
   <section class="seccion" aria-labelledby="t-problema">
-    <div class="wrap bloque-grilla">
-      <div class="bloque-texto-col">
-        <h2 class="display titulo-seccion" id="t-problema">Qué necesitaba</h2>
-        <div class="bloque-texto">
+    <div class="wrap caso-grilla">
+      <div class="caso-texto">
+        <p class="kicker">El problema</p>
+        <h2 class="titulo" id="t-problema">Qué <em>necesitaba</em><span class="punto">.</span></h2>
 {problema}
-        </div>
         <h3 class="subtitulo">Qué construí</h3>
         <ul class="lista-hecho">
 {hecho}
         </ul>
       </div>
-      <div class="bloque-imagen">{lado}</div>
+      <div class="caso-lado">{lado}</div>
     </div>
   </section>
 
+{monitor}
 {galeria}
-</main>
-
-<footer class="closing oscuro">
-  <div class="wrap">
-    <div class="cierre-caso">
+  <section class="seccion" aria-labelledby="t-cierre">
+    <div class="wrap cierre-caso">
       <div>
 {links}
-        <h2 class="display titulo-cierre">¿Querés algo así para tu negocio?</h2>
-        <div class="botones label" style="margin-top:24px"><a class="btn btn-principal" href="{wa_caso}" target="_blank" rel="noopener">Escribime por WhatsApp <span class="flecha" aria-hidden="true">→</span></a></div>
+        <h2 class="titulo" id="t-cierre">¿Querés algo así para <em>tu negocio</em>?</h2>
+        <div><a class="btn btn-rojo" href="{wa_caso}" target="_blank" rel="noopener">Escribime por WhatsApp <span class="flecha" aria-hidden="true">→</span></a></div>
       </div>
       <a class="siguiente" href="{sig_slug}.html">
-        <span class="marco siguiente-foto">{sig_img}</span>
-        <span class="label apagado" style="display:block;margin-top:16px">Siguiente proyecto →</span>
-        <span class="display" style="display:block;margin-top:8px">{sig_titulo}</span>
+        <span class="siguiente-foto">{sig_img}</span>
+        <span class="kicker">Siguiente proyecto</span>
+        <strong>{sig_titulo} →</strong>
       </a>
     </div>
-    <p class="pie label">© 2026 Valentín Gil · <a href="{wa}" target="_blank" rel="noopener">¿Tenés una idea? Escribime ↗</a> · <a href="#titulo">Volver arriba ↑</a></p>
-  </div>
-</footer>
+  </section>
 
-<nav class="actionbar" aria-label="Contacto rápido">
-  <a class="btn btn-principal label" href="{wa}" target="_blank" rel="noopener">Escribime por WhatsApp <img src="../img/iconos/whatsapp.svg" alt="" width="20" height="20"></a>
-</nav>
+</main>
+
+<footer class="pie">
+  <div class="wrap">
+    <div class="pie-arriba">
+      <a href="#titulo">Volver arriba ↑</a>
+      <div class="pie-links">
+        <a href="{wa}" target="_blank" rel="noopener">WhatsApp ↗</a>
+        <a href="{github}" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="mailto:{mail}">Correo ↗</a>
+      </div>
+    </div>
+    <p class="pie-marca" aria-hidden="true">valentín<span class="punto">.</span></p>
+  </div>
+  <div class="pie-legal wrap"><span>© 2026 Valentín Gil · San Juan, Argentina</span></div>
+</footer>
 
 <script src="../js/sitio.js" defer></script>
 </body>
@@ -256,21 +255,19 @@ def generar(c):
 
     if c["portada_img"]:
         src, w, h, alt = c["portada_img"]
-        portada = f'      <div class="caso-vista"><div class="marco">{img(src, w, h, alt)}</div></div>'
-        fondo = " oscuro"
+        portada = f'      <div class="caso-vista">{img(src, w, h, alt)}</div>'
     else:
         tel = "".join(f'<span class="telefono">{img(s, 390, 844, a)}</span>' for s, a in c["telefonos"][:4])
-        portada = f'      <div class="galeria-telefonos">{tel}</div>'
-        fondo = " superficie"
+        portada = f'      <div class="caso-telefonos">{tel}</div>'
 
     datos = ""
     if c["datos"]:
         items = "".join(
-            f'<p class="dato"><strong data-contar="{n}">{numero(n)}</strong><span class="label apagado">{escape(t)}</span></p>'
+            f'<p class="dato"><strong data-contar="{n}">{numero(n)}</strong><span>{escape(t)}</span></p>'
             for n, t in c["datos"])
-        datos = f'      <div class="datos" style="margin-top:20px">{items}</div>'
+        datos = f'      <div class="datos">{items}</div>'
 
-    problema = "\n".join(f"          <p>{p}</p>" for p in c["problema"])
+    problema = "\n".join(f"        <p>{p}</p>" for p in c["problema"])
     hecho = "\n".join(
         f'          <li><span class="vineta" aria-hidden="true"></span><span>{escape(t)}</span></li>'
         for t in c["hecho"])
@@ -284,7 +281,7 @@ def generar(c):
         resto = []
     if len(resto) == 1:
         s1, w1, h1, a1, _ = resto[0]
-        lado += f'<div class="marco" style="margin-top:24px">{img(s1, w1, h1, a1)}</div>'
+        lado += f'<div class="marco">{img(s1, w1, h1, a1)}</div>'
         resto = []
 
     galeria = ""
@@ -293,9 +290,9 @@ def generar(c):
             f'<div class="marco{" ancha" if ancha else ""}">{img(s, w, h, a)}</div>'
             for s, w, h, a, ancha in resto)
         galeria = (
-            '  <section class="seccion superficie" aria-labelledby="t-pantallas">\n'
+            '  <section aria-labelledby="t-pantallas">\n'
             '    <div class="wrap">\n'
-            '      <h2 class="display titulo-seccion" id="t-pantallas">Más pantallas</h2>\n'
+            '      <h2 class="kicker" id="t-pantallas" style="margin-bottom:24px">Más pantallas</h2>\n'
             f'      <div class="galeria">{items}</div>\n'
             '    </div>\n'
             '  </section>\n')
@@ -303,27 +300,42 @@ def generar(c):
     links = ""
     if c["links"]:
         items = "".join(
-            f'<a class="btn{" btn-principal" if i == 0 else ""}" href="{u}" target="_blank" rel="noopener">{escape(t)} <span class="flecha" aria-hidden="true">↗</span></a>'
-            for i, (t, u) in enumerate(c["links"]))
-        links = (
-            '        <div class="comprobalo">\n'
-            '          <p class="label apagado">Comprobalo vos</p>\n'
-            f'          <div class="botones label">{items}</div>\n'
-            '        </div>')
+            f'<a class="chip" href="{u}" target="_blank" rel="noopener">{escape(t)} ↗</a>'
+            for t, u in c["links"])
+        links = f'        <div class="sobre-links">{items}</div>'
 
     texto_wa = quote(f"Hola Valentín, vi el caso de {c['titulo']} en tu portfolio y quiero algo parecido para mi negocio.")
     wa_caso = f"{WA}?text={texto_wa}"
     if c["links"]:
         t0, u0 = c["links"][0]
-        cta = f'<a class="btn btn-principal" href="{u0}" target="_blank" rel="noopener">{escape(t0)} <span class="flecha" aria-hidden="true">↗</span></a>'
+        cta = (f'<a class="btn btn-rojo" href="{u0}" target="_blank" rel="noopener">{escape(t0)} <span class="flecha" aria-hidden="true">↗</span></a>'
+               f'<a class="btn" href="{wa_caso}" target="_blank" rel="noopener">Quiero algo así</a>')
     else:
-        cta = f'<a class="btn btn-principal" href="{wa_caso}" target="_blank" rel="noopener">Quiero algo así <span class="flecha" aria-hidden="true">→</span></a>'
+        cta = f'<a class="btn btn-rojo" href="{wa_caso}" target="_blank" rel="noopener">Quiero algo así <span class="flecha" aria-hidden="true">→</span></a>'
+
+    monitor = ""
+    if c.get("monitor"):
+        tels = "".join(f'<span class="telefono">{img(s, 540, 1155, a)}</span>' for s, a in c["monitor"])
+        monitor = (
+            '  <section class="seccion monitor" id="monitor" aria-labelledby="t-monitor">\n'
+            '    <div class="wrap monitor-grilla">\n'
+            '      <div class="monitor-texto">\n'
+            '        <p class="kicker">App del dueño</p>\n'
+            '        <h2 class="titulo" id="t-monitor">DonaFull <em>Monitor</em><span class="punto">.</span></h2>\n'
+            '        <p>El dueño no tiene que estar en el local para saber cómo va. Abre el celular y ve el día dibujado como una línea de subte: cada franja horaria es una estación, cada cajero una línea de color y el cambio de turno, un transbordo.</p>\n'
+            '        <p>Stock con alertas de reposición, movimientos, ventas y reportes diarios, semanales y mensuales. Todo en tiempo real, sincronizado con la caja de la PC.</p>\n'
+            '        <div class="etiquetas"><span class="etiqueta">Flutter</span><span class="etiqueta">Firebase</span><span class="etiqueta">Tiempo real</span><span class="etiqueta">Android</span></div>\n'
+            '      </div>\n'
+            f'      <div class="monitor-telefonos">{tels}</div>\n'
+            '    </div>\n'
+            '  </section>\n')
 
     return PLANTILLA.format(
         slug=c["slug"], titulo=escape(c["titulo"]), num=c["num"], bajada=escape(c["bajada"]), ficha=ficha,
-        portada=portada, fondo=fondo, datos=datos, problema=problema, hecho=hecho, galeria=galeria, links=links,
+        portada=portada, datos=datos, problema=problema, hecho=hecho, galeria=galeria, links=links,
         sig_slug=c["siguiente"][0], sig_titulo=escape(c["siguiente"][1]),
-        sig_img=img(*FOTO_SIGUIENTE[c["siguiente"][0]]), lado=lado, cta=cta, wa_caso=wa_caso, wa=WA, mail=MAIL, github=GITHUB)
+        sig_img=img(*FOTO_SIGUIENTE[c["siguiente"][0]]), monitor=monitor, lado=lado, cta=cta, wa_caso=wa_caso,
+        wa=WA, mail=MAIL, github=GITHUB)
 
 
 if __name__ == "__main__":
